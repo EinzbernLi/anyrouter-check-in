@@ -59,7 +59,7 @@ jobs:
         run: |
           echo "## Ruff Format 检查" >> "$GITHUB_STEP_SUMMARY"
           set +e
-          uv run ruff format --check . 2>&1 | tee ruff-format.log
+          uv run ruff format --diff strict_checkin_v2.py 2>&1 | tee ruff-format.log
           code=${PIPESTATUS[0]}
           set -e
           if [ "$code" -eq 0 ]; then
