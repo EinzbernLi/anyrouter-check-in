@@ -63,10 +63,12 @@ jobs:
         uv run python -m cloakbrowser install
         echo "✅ CloakBrowser 安装完成"
 
-    - name: 恢复余额历史缓存
+    - name: 恢复签到状态缓存
       uses: actions/cache@v5
       with:
-        path: balance_hash.txt
+        path: |
+          balance_hash.txt
+          checkin_state.json
         key: balance-hash-${{ github.ref_name }}-${{ github.run_id }}
         restore-keys: |
           balance-hash-${{ github.ref_name }}-
@@ -114,7 +116,7 @@ jobs:
         BARK_KEY: ${{ secrets.BARK_KEY }}
         BARK_SERVER: ${{ secrets.BARK_SERVER }}
       run: |
-        xvfb-run -a --server-args="-screen 0 1920x1080x24" uv run checkin.py
+        xvfb-run -a --server-args="-screen 0 1920x1080x24" uv run strict_checkin.py
 
     - name: 上传调试截图
       if: always() && env.DEBUG_MODE == 'true'
