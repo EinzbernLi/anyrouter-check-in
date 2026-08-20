@@ -17,6 +17,7 @@ from pathlib import Path
 
 import strict_checkin as base
 
+ORIGINAL_PARSE_OUTPUT = base.parse_output
 RUNTIME_CHECKER = Path('.strict_checkin_runtime.py')
 PRE_BALANCE_RE = re.compile(r'^\[STRICT-BALANCE-BEFORE\]\s+(.+?): quota=\$(-?\d+(?:\.\d+)?), used=\$(-?\d+(?:\.\d+)?)$')
 POST_BALANCE_RE = re.compile(r'^\[STRICT-BALANCE-AFTER\]\s+(.+?): quota=\$(-?\d+(?:\.\d+)?), used=\$(-?\d+(?:\.\d+)?)$')
@@ -87,7 +88,7 @@ def run_upstream() -> tuple[int, list[str]]:
 
 
 def parse_output(lines: list[str]) -> list[base.Observation]:
-	observations = base.parse_output(lines)
+	observations = ORIGINAL_PARSE_OUTPUT(lines)
 	by_name = {item.name: item for item in observations}
 
 	for raw_line in lines:
