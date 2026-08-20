@@ -18,12 +18,8 @@ from pathlib import Path
 import strict_checkin as base
 
 RUNTIME_CHECKER = Path('.strict_checkin_runtime.py')
-PRE_BALANCE_RE = re.compile(
-	r'^\[STRICT-BALANCE-BEFORE\]\s+(.+?): quota=\$(-?\d+(?:\.\d+)?), used=\$(-?\d+(?:\.\d+)?)$'
-)
-POST_BALANCE_RE = re.compile(
-	r'^\[STRICT-BALANCE-AFTER\]\s+(.+?): quota=\$(-?\d+(?:\.\d+)?), used=\$(-?\d+(?:\.\d+)?)$'
-)
+PRE_BALANCE_RE = re.compile(r'^\[STRICT-BALANCE-BEFORE\]\s+(.+?): quota=\$(-?\d+(?:\.\d+)?), used=\$(-?\d+(?:\.\d+)?)$')
+POST_BALANCE_RE = re.compile(r'^\[STRICT-BALANCE-AFTER\]\s+(.+?): quota=\$(-?\d+(?:\.\d+)?), used=\$(-?\d+(?:\.\d+)?)$')
 
 
 def _instrument_upstream_source(source: str) -> str:
