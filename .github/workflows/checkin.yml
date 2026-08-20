@@ -117,12 +117,12 @@ jobs:
         BARK_SERVER: ${{ secrets.BARK_SERVER }}
       run: |
         set +e
-        xvfb-run -a --server-args="-screen 0 1920x1080x24" uv run strict_checkin.py
+        xvfb-run -a --server-args="-screen 0 1920x1080x24" uv run strict_checkin_v2.py
         code=$?
         if [ "$code" -eq 2 ]; then
           echo "⚠️ 严格判定暂时无法确认，5 秒后自动重试一次"
           sleep 5
-          xvfb-run -a --server-args="-screen 0 1920x1080x24" uv run strict_checkin.py
+          xvfb-run -a --server-args="-screen 0 1920x1080x24" uv run strict_checkin_v2.py
           code=$?
         fi
         exit "$code"
