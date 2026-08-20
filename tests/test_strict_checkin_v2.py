@@ -1,3 +1,4 @@
+import strict_checkin_v2 as v2
 from strict_checkin_v2 import _instrument_upstream_source, parse_output
 
 
@@ -32,3 +33,20 @@ def test_parse_output_uses_explicit_anyrouter_postcheck_evidence():
 	assert obs.before_used == 0.0
 	assert obs.after_quota == 75.0
 	assert obs.after_used == 0.0
+
+
+def test_parse_output_does_not_recurse_after_base_hook(monkeypatch):
+	lines = [
+		'[PROCESSING] Starting to process AnyRouter',
+		'[INFO] AnyRouter: Using provider "anyrouter" (https://anyrouter.top)',
+		':money: Current balance: $75.0, Used: $0.0',
+		'[STRICT-BALANCE-BEFORE] AnyRouter: quota=$75.00, used=$0.00',
+		'[SUCCESS] AnyRouter: Check-in successful!',
+		'[STRICT-BALANCE-AFTER] AnyRouter: quota=$75.00, used=$0.00',
+	]
+
+	monkeypatch.setattr(v2.base, 'parse_output', v2.parse_output)
+	observations = v2.parse_output(lines)
+
+	assert len(observations) == 1
+	assert observations[0].after_quota == 75.0
